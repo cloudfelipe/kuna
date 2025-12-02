@@ -33,9 +33,10 @@ tabs.forEach(tab => {
     tab.classList.add('active');
     const targetPane = document.getElementById(paneId);
     if (targetPane) targetPane.classList.add('active');
-    trackEvent('gallery_tab_change', { tab: tab.textContent?.trim(), pane: paneId });
+    const tabKey = tab.textContent?.trim().toLowerCase().replace(/\s+/g, '_');
+    trackEvent('media_tab_change', { tab_key: tabKey, pane: paneId });
     if (paneId === 'p-planos') {
-      trackEvent('video_tab_view', { pane: paneId });
+      trackEvent('media_video_tab_view', { tab_key: tabKey });
     }
   });
 });
@@ -89,7 +90,10 @@ const trackWhatsappLinks = () => {
   const waLinks = document.querySelectorAll('a[href*="wa.me"]');
   waLinks.forEach(link => {
     ensureExternalTarget(link);
-    attachClickTracking(link, 'whatsapp_click', { href: link.href });
+    attachClickTracking(link, 'cta_whatsapp_click', {
+      href: link.href,
+      cta_location: link.dataset.ctaLocation || 'generic'
+    });
   });
 };
 trackWhatsappLinks();
@@ -114,7 +118,7 @@ const updateLightbox = () => {
   if (!lightboxImg || !lightboxCounter || !lightboxState.images.length) return;
   lightboxImg.src = lightboxState.images[lightboxState.index];
   lightboxCounter.textContent = `${lightboxState.index + 1} / ${lightboxState.images.length}`;
-  trackEvent('lightbox_image_view', { index: lightboxState.index + 1 });
+  trackEvent('media_lightbox_image_view', { index: lightboxState.index + 1 });
 };
 
 const handleKeyNavigation = event => {
@@ -164,7 +168,7 @@ function openLightbox() {
   updateLightbox();
   document.body.style.overflow = 'hidden';
   attachKeyListener();
-  trackEvent('lightbox_open');
+  trackEvent('media_lightbox_open');
 }
 
 function closeLightbox() {
@@ -173,21 +177,21 @@ function closeLightbox() {
   document.body.style.overflow = '';
   detachKeyListener();
   touchStartX = null;
-  trackEvent('lightbox_close');
+  trackEvent('media_lightbox_close');
 }
 
 function showPrev() {
   if (!lightboxState.images.length) return;
   lightboxState.index = (lightboxState.index - 1 + lightboxState.images.length) % lightboxState.images.length;
   updateLightbox();
-  trackEvent('lightbox_nav', { direction: 'prev' });
+  trackEvent('media_lightbox_navigation', { direction: 'prev' });
 }
 
 function showNext() {
   if (!lightboxState.images.length) return;
   lightboxState.index = (lightboxState.index + 1) % lightboxState.images.length;
   updateLightbox();
-  trackEvent('lightbox_nav', { direction: 'next' });
+  trackEvent('media_lightbox_navigation', { direction: 'next' });
 }
 
 function initLightbox() {
@@ -199,7 +203,7 @@ function initLightbox() {
         lightboxState.images = Array.from(images).map(i => i.src);
         lightboxState.index = index;
         openLightbox();
-        trackEvent('gallery_image_click', { index: index + 1, alt: img.alt });
+        trackEvent('media_image_open', { index: index + 1, media_alt: img.alt });
       });
     });
   });
@@ -226,7 +230,7 @@ const toggleMobileMenu = () => {
   mobileMenu?.classList.toggle('active');
   mobileOverlay?.classList.toggle('active');
   document.body.style.overflow = mobileMenu?.classList.contains('active') ? 'hidden' : '';
-  trackEvent('mobile_menu_toggle', { state: mobileMenu?.classList.contains('active') ? 'open' : 'closed' });
+  trackEvent('nav_mobile_toggle', { state: mobileMenu?.classList.contains('active') ? 'open' : 'closed' });
 };
 
 const closeMobileMenu = (reason = 'manual') => {
@@ -234,7 +238,7 @@ const closeMobileMenu = (reason = 'manual') => {
   mobileMenu?.classList.remove('active');
   mobileOverlay?.classList.remove('active');
   document.body.style.overflow = '';
-  trackEvent('mobile_menu_toggle', { state: 'closed', reason });
+  trackEvent('nav_mobile_toggle', { state: 'closed', reason });
 };
 
 menuToggle?.addEventListener('click', toggleMobileMenu);
@@ -242,8 +246,8 @@ mobileOverlay?.addEventListener('click', () => closeMobileMenu('overlay'));
 mobileMenuLinks.forEach(link => link.addEventListener('click', () => closeMobileMenu('nav_link')));
 
 // Tracking for secondary CTAs and navigation
-attachClickTracking(document.querySelector('.btn-primary'), 'cta_secondary_click');
-document.querySelectorAll('.nav .link').forEach(link => attachClickTracking(link, 'nav_link_click', { target: link.getAttribute('href') }));
+attachClickTracking(document.querySelector('.btn-primary'), 'cta_schedule_visit_click', { cta_location: 'pricing_card' });
+document.querySelectorAll('.nav .link').forEach(link => attachClickTracking(link, 'nav_link_tap', { target: link.getAttribute('href') }));
 
 document.addEventListener('click', event => {
   const link = event.target.closest('a');
@@ -252,7 +256,7 @@ document.addEventListener('click', event => {
   const isInternal = href.startsWith('#') || (link.host === window.location.host);
   const isWhatsApp = href.includes('wa.me');
   if (!isInternal && !isWhatsApp) {
-    trackEvent('outbound_click', { href });
+    trackEvent('outbound_link_click', { href });
   }
 });
 
@@ -261,7 +265,7 @@ if (videoFrame && 'IntersectionObserver' in window) {
   const videoObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        trackEvent('video_tour_view', { method: 'viewport' });
+        trackEvent('media_video_viewport', { method: 'viewport' });
         observer.unobserve(entry.target);
       }
     });
@@ -274,7 +278,7 @@ if ('IntersectionObserver' in window) {
   const sectionObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        trackEvent('section_view', { section: entry.target.id });
+        trackEvent('section_impression', { section_id: entry.target.id });
         observer.unobserve(entry.target);
       }
     });
@@ -297,7 +301,7 @@ const handleScrollDepth = () => {
   scrollDepthTargets.forEach(target => {
     if (progress >= target.threshold && !triggeredDepths.has(target.label)) {
       triggeredDepths.add(target.label);
-      trackEvent('scroll_depth', { depth: `${target.label}%` });
+      trackEvent('page_scroll_depth', { progress: target.threshold, depth_label: `${target.label}%` });
     }
   });
 };
@@ -305,6 +309,6 @@ document.addEventListener('scroll', handleScrollDepth, { passive: true });
 window.addEventListener('load', handleScrollDepth);
 
 setTimeout(() => {
-  trackEvent('time_on_page', { seconds: 30 });
+  trackEvent('page_engagement_timer', { elapsed_seconds: 30 });
 }, 30000);
 
