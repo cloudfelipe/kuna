@@ -62,17 +62,35 @@ const preMsgs = {
   button: encodeURIComponent('Hola, estoy interesado en el apartamento de Kuna.')
 };
 
+const ensureExternalTarget = link => {
+  if (!link) return;
+  link.setAttribute('target', '_blank');
+  link.setAttribute('rel', 'noopener noreferrer');
+};
+
 const setWhatsAppLinks = () => {
   const heroCta = document.getElementById('cta-hero');
   const finalCta = document.getElementById('cta-final');
-  if (heroCta) heroCta.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.hero}`;
-  if (finalCta) finalCta.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.final}`;
-  if (waButton) waButton.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.button}`;
+  if (heroCta) {
+    heroCta.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.hero}`;
+    ensureExternalTarget(heroCta);
+  }
+  if (finalCta) {
+    finalCta.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.final}`;
+    ensureExternalTarget(finalCta);
+  }
+  if (waButton) {
+    waButton.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.button}`;
+    ensureExternalTarget(waButton);
+  }
 };
 setWhatsAppLinks();
 const trackWhatsappLinks = () => {
   const waLinks = document.querySelectorAll('a[href*="wa.me"]');
-  waLinks.forEach(link => attachClickTracking(link, 'whatsapp_click', { href: link.href }));
+  waLinks.forEach(link => {
+    ensureExternalTarget(link);
+    attachClickTracking(link, 'whatsapp_click', { href: link.href });
+  });
 };
 trackWhatsappLinks();
 
