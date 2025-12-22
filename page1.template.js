@@ -33,10 +33,9 @@ tabs.forEach(tab => {
     tab.classList.add('active');
     const targetPane = document.getElementById(paneId);
     if (targetPane) targetPane.classList.add('active');
-    const tabKey = tab.textContent?.trim().toLowerCase().replace(/\s+/g, '_');
-    trackEvent('media_tab_change', { tab_key: tabKey, pane: paneId });
+    trackEvent('gallery_tab_change', { tab: tab.textContent?.trim(), pane: paneId });
     if (paneId === 'p-planos') {
-      trackEvent('media_video_tab_view', { tab_key: tabKey });
+      trackEvent('video_tab_view', { pane: paneId });
     }
   });
 });
@@ -56,45 +55,24 @@ window.addEventListener('pageshow', handleScroll);
 handleScroll();
 
 // Update all WA links when you set your number once here:
-const WHATSAPP_NUMBER = '{{WHATSAPP_NUMBER}}';
+const WHATSAPP_NUMBER = '57XXXXXXXXXX'; // ← reemplaza por tu número
 const preMsgs = {
   hero: encodeURIComponent('¡Hola! Vi el apartamento en Kuna y quiero agendar una visita 🏡'),
   final: encodeURIComponent('Hola, quiero información del apartamento en Kuna para arriendo y agendar visita.'),
   button: encodeURIComponent('Hola, estoy interesado en el apartamento de Kuna.')
 };
 
-const ensureExternalTarget = link => {
-  if (!link) return;
-  link.setAttribute('target', '_blank');
-  link.setAttribute('rel', 'noopener noreferrer');
-};
-
 const setWhatsAppLinks = () => {
   const heroCta = document.getElementById('cta-hero');
   const finalCta = document.getElementById('cta-final');
-  if (heroCta) {
-    heroCta.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.hero}`;
-    ensureExternalTarget(heroCta);
-  }
-  if (finalCta) {
-    finalCta.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.final}`;
-    ensureExternalTarget(finalCta);
-  }
-  if (waButton) {
-    waButton.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.button}`;
-    ensureExternalTarget(waButton);
-  }
+  if (heroCta) heroCta.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.hero}`;
+  if (finalCta) finalCta.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.final}`;
+  if (waButton) waButton.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.button}`;
 };
 setWhatsAppLinks();
 const trackWhatsappLinks = () => {
   const waLinks = document.querySelectorAll('a[href*="wa.me"]');
-  waLinks.forEach(link => {
-    ensureExternalTarget(link);
-    attachClickTracking(link, 'cta_whatsapp_click', {
-      href: link.href,
-      cta_location: link.dataset.ctaLocation || 'generic'
-    });
-  });
+  waLinks.forEach(link => attachClickTracking(link, 'whatsapp_click', { href: link.href }));
 };
 trackWhatsappLinks();
 
@@ -118,7 +96,7 @@ const updateLightbox = () => {
   if (!lightboxImg || !lightboxCounter || !lightboxState.images.length) return;
   lightboxImg.src = lightboxState.images[lightboxState.index];
   lightboxCounter.textContent = `${lightboxState.index + 1} / ${lightboxState.images.length}`;
-  trackEvent('media_lightbox_image_view', { index: lightboxState.index + 1 });
+  trackEvent('lightbox_image_view', { index: lightboxState.index + 1 });
 };
 
 const handleKeyNavigation = event => {
@@ -168,7 +146,7 @@ function openLightbox() {
   updateLightbox();
   document.body.style.overflow = 'hidden';
   attachKeyListener();
-  trackEvent('media_lightbox_open');
+  trackEvent('lightbox_open');
 }
 
 function closeLightbox() {
@@ -177,21 +155,21 @@ function closeLightbox() {
   document.body.style.overflow = '';
   detachKeyListener();
   touchStartX = null;
-  trackEvent('media_lightbox_close');
+  trackEvent('lightbox_close');
 }
 
 function showPrev() {
   if (!lightboxState.images.length) return;
   lightboxState.index = (lightboxState.index - 1 + lightboxState.images.length) % lightboxState.images.length;
   updateLightbox();
-  trackEvent('media_lightbox_navigation', { direction: 'prev' });
+  trackEvent('lightbox_nav', { direction: 'prev' });
 }
 
 function showNext() {
   if (!lightboxState.images.length) return;
   lightboxState.index = (lightboxState.index + 1) % lightboxState.images.length;
   updateLightbox();
-  trackEvent('media_lightbox_navigation', { direction: 'next' });
+  trackEvent('lightbox_nav', { direction: 'next' });
 }
 
 function initLightbox() {
@@ -203,7 +181,7 @@ function initLightbox() {
         lightboxState.images = Array.from(images).map(i => i.src);
         lightboxState.index = index;
         openLightbox();
-        trackEvent('media_image_open', { index: index + 1, media_alt: img.alt });
+        trackEvent('gallery_image_click', { index: index + 1, alt: img.alt });
       });
     });
   });
@@ -230,7 +208,7 @@ const toggleMobileMenu = () => {
   mobileMenu?.classList.toggle('active');
   mobileOverlay?.classList.toggle('active');
   document.body.style.overflow = mobileMenu?.classList.contains('active') ? 'hidden' : '';
-  trackEvent('nav_mobile_toggle', { state: mobileMenu?.classList.contains('active') ? 'open' : 'closed' });
+  trackEvent('mobile_menu_toggle', { state: mobileMenu?.classList.contains('active') ? 'open' : 'closed' });
 };
 
 const closeMobileMenu = (reason = 'manual') => {
@@ -238,7 +216,7 @@ const closeMobileMenu = (reason = 'manual') => {
   mobileMenu?.classList.remove('active');
   mobileOverlay?.classList.remove('active');
   document.body.style.overflow = '';
-  trackEvent('nav_mobile_toggle', { state: 'closed', reason });
+  trackEvent('mobile_menu_toggle', { state: 'closed', reason });
 };
 
 menuToggle?.addEventListener('click', toggleMobileMenu);
@@ -246,8 +224,8 @@ mobileOverlay?.addEventListener('click', () => closeMobileMenu('overlay'));
 mobileMenuLinks.forEach(link => link.addEventListener('click', () => closeMobileMenu('nav_link')));
 
 // Tracking for secondary CTAs and navigation
-attachClickTracking(document.querySelector('.btn-primary'), 'cta_schedule_visit_click', { cta_location: 'pricing_card' });
-document.querySelectorAll('.nav .link').forEach(link => attachClickTracking(link, 'nav_link_tap', { target: link.getAttribute('href') }));
+attachClickTracking(document.querySelector('.btn-primary'), 'cta_secondary_click');
+document.querySelectorAll('.nav .link').forEach(link => attachClickTracking(link, 'nav_link_click', { target: link.getAttribute('href') }));
 
 document.addEventListener('click', event => {
   const link = event.target.closest('a');
@@ -256,7 +234,7 @@ document.addEventListener('click', event => {
   const isInternal = href.startsWith('#') || (link.host === window.location.host);
   const isWhatsApp = href.includes('wa.me');
   if (!isInternal && !isWhatsApp) {
-    trackEvent('outbound_link_click', { href });
+    trackEvent('outbound_click', { href });
   }
 });
 
@@ -265,7 +243,7 @@ if (videoFrame && 'IntersectionObserver' in window) {
   const videoObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        trackEvent('media_video_viewport', { method: 'viewport' });
+        trackEvent('video_tour_view', { method: 'viewport' });
         observer.unobserve(entry.target);
       }
     });
@@ -278,7 +256,7 @@ if ('IntersectionObserver' in window) {
   const sectionObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        trackEvent('section_impression', { section_id: entry.target.id });
+        trackEvent('section_view', { section: entry.target.id });
         observer.unobserve(entry.target);
       }
     });
@@ -301,7 +279,7 @@ const handleScrollDepth = () => {
   scrollDepthTargets.forEach(target => {
     if (progress >= target.threshold && !triggeredDepths.has(target.label)) {
       triggeredDepths.add(target.label);
-      trackEvent('page_scroll_depth', { progress: target.threshold, depth_label: `${target.label}%` });
+      trackEvent('scroll_depth', { depth: `${target.label}%` });
     }
   });
 };
@@ -309,6 +287,6 @@ document.addEventListener('scroll', handleScrollDepth, { passive: true });
 window.addEventListener('load', handleScrollDepth);
 
 setTimeout(() => {
-  trackEvent('page_engagement_timer', { elapsed_seconds: 30 });
+  trackEvent('time_on_page', { seconds: 30 });
 }, 30000);
 
