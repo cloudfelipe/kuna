@@ -25,7 +25,14 @@ const languages = ['es', 'en'];
 languages.forEach((lang) => {
   const i18nPath = join(root, 'i18n', `${lang}.json`);
   const i18n = JSON.parse(readFileSync(i18nPath, 'utf8'));
-  const map = { ...envReplacements, ...i18n };
+  const map = {
+    ...envReplacements,
+    ...i18n,
+    LANG_HREF_ES: 'page-es.html',
+    LANG_HREF_EN: 'page-en.html',
+    LANG_ACTIVE_ES: lang === 'es' ? 'active' : '',
+    LANG_ACTIVE_EN: lang === 'en' ? 'active' : ''
+  };
 
   const files = [
     { template: 'page1.template.html', output: `page-${lang}.html` },
