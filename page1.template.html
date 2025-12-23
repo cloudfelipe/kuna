@@ -97,7 +97,7 @@
       <p>{{HERO_P}}</p>
       <a class="cta" id="cta-hero" data-cta-location="hero" href="https://wa.me/{{WHATSAPP_NUMBER}}?text=%C2%A1Hola!%20Vi%20el%20apartamento%20en%20Kuna%20y%20quiero%20agendar%20una%20visita%20%F0%9F%8F%A1" target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 24 24" fill="currentColor" style="width:24px;height:24px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-        Escríbeme por WhatsApp
+        {{CTA_HERO_LABEL}}
       </a>
     </div>
   </header>
@@ -110,7 +110,7 @@
         <div class="pricing-header">
           <div>
             <div class="price">$4.000.000</div>
-            <p style="color:rgba(255,255,255,.8);font-size:16px;margin-top:var(--space-xs)">Canon mensual</p>
+            <p style="color:rgba(255,255,255,.8);font-size:16px;margin-top:var(--space-xs)">{{PRICE_CANON_LABEL}}</p>
           </div>
           <a href="#contacto" class="btn-primary">{{CTA_VISIT_LABEL}}</a>
         </div>
@@ -119,43 +119,43 @@
           <div class="pricing-item">
             <span class="pricing-icon">📐</span>
             <div>
-              <strong>75,73 m²</strong>
-              <p>+ terraza 70 m²</p>
+              <strong>{{PRICE_AREA_MAIN}}</strong>
+              <p>{{PRICE_AREA_TERRACE}}</p>
             </div>
           </div>
           <div class="pricing-item">
             <span class="pricing-icon">🛏</span>
             <div>
-              <strong>2 habitaciones</strong>
-              <p>+ estudio independiente</p>
+              <strong>{{PRICE_BEDS}}</strong>
+              <p>{{PRICE_BEDS_DESC}}</p>
             </div>
           </div>
           <div class="pricing-item">
             <span class="pricing-icon">🚿</span>
             <div>
-              <strong>2 baños</strong>
-              <p>Completos</p>
+              <strong>{{PRICE_BATHS}}</strong>
+              <p>{{PRICE_BATHS_DESC}}</p>
             </div>
           </div>
           <div class="pricing-item">
             <span class="pricing-icon">🚘</span>
             <div>
-              <strong>2 parqueaderos</strong>
-              <p>+ 2 cuartos útiles</p>
+              <strong>{{PRICE_PARKING}}</strong>
+              <p>{{PRICE_PARKING_DESC}}</p>
             </div>
           </div>
           <div class="pricing-item">
             <span class="pricing-icon">✅</span>
             <div>
-              <strong>Admin incluida</strong>
-              <p>Sin costos adicionales</p>
+              <strong>{{PRICE_ADMIN}}</strong>
+              <p>{{PRICE_ADMIN_DESC}}</p>
             </div>
           </div>
           <div class="pricing-item">
             <span class="pricing-icon">🛡️</span>
             <div>
-              <strong>Aprobación SURA</strong>
-              <p>Sin tener que lidiar con inmobiliarias</p>
+              <strong>{{PRICE_SURA}}</strong>
+              <p>{{PRICE_SURA_DESC}}</p>
             </div>
           </div>
         </div>
@@ -165,22 +165,22 @@
     <!-- DETALLES -->
     <section id="detalles">
       <div class="head">
-        <h2 class="title">Detalles del apartamento</h2>
-        <p class="sub">Edificio Kuna · Piso 3 (primer nivel habitacional) · San Antonio de Pereira – Rionegro</p>
+        <h2 class="title">{{DETAILS_TITLE}}</h2>
+        <p class="sub">{{DETAILS_SUB}}</p>
       </div>
       <div class="features">
-        <div class="feat">🛏 1 habitación principal con baño &amp; vestier</div>
-        <div class="feat">🛏 1 habitación auxiliar</div>
-        <div class="feat">🧑‍💻 Estudio independiente con puerta vidriera</div>
-        <div class="feat">🚿 2 baños</div>
-        <div class="feat">📐 75,73 m² + terraza privada 70,09 m²</div>
-        <div class="feat">🌳 Vista a reserva natural</div>
-        <div class="feat">🍳 Cocina con isla (semi integral)</div>
-        <div class="feat">🧺 Cuarto de ropas</div>
-        <div class="feat">🚘 2 parqueaderos privados</div>
-        <div class="feat">📦 2 cuartos útiles</div>
-        <div class="feat">🐶 Pet friendly<br>🔐 Puerta de Seguridad</div>
-        <div class="feat">🛡️ Seguridad 24/7 (portería)</div>
+        <div class="feat">{{FEATURE_1}}</div>
+        <div class="feat">{{FEATURE_2}}</div>
+        <div class="feat">{{FEATURE_3}}</div>
+        <div class="feat">{{FEATURE_4}}</div>
+        <div class="feat">{{FEATURE_5}}</div>
+        <div class="feat">{{FEATURE_6}}</div>
+        <div class="feat">{{FEATURE_7}}</div>
+        <div class="feat">{{FEATURE_8}}</div>
+        <div class="feat">{{FEATURE_9}}</div>
+        <div class="feat">{{FEATURE_10}}</div>
+        <div class="feat">{{FEATURE_11}}</div>
+        <div class="feat">{{FEATURE_12}}</div>
       </div>
     </section>
 
@@ -284,17 +284,17 @@
         <p class="sub">{{AMENITIES_SUB}}</p>
       </div>
       <ul class="bullets">
-        <li>🌳 Bosque nativo y sendero ecológico</li>
-        <li>🐕 Zona de mascotas</li>
-        <li>⚽ Cancha fútbol 5</li>
-        <li>🔥 Zona de fogata (Próximamente)</li>
-        <li>🍃 Zona picnic (Próximamente)</li>
-        <li>🧒 Juegos infantiles / playground (Próximamente)</li>
-        <li>🏋️ Gimnasio (Próximamente)</li>
-        <li>💼 Coworking (Próximamente)</li>
-        <li>🏠 Salón social (Próximamente)</li>
-        <li>🍖 Futuras zonas de BBQ junto a la reserva</li>
-        <li>🛒 Futuro mall comercial cercano Silvestra Plaza (Euro supermercado)</li>
+        <li>{{AMENITY_1}}</li>
+        <li>{{AMENITY_2}}</li>
+        <li>{{AMENITY_3}}</li>
+        <li>{{AMENITY_4}}</li>
+        <li>{{AMENITY_5}}</li>
+        <li>{{AMENITY_6}}</li>
+        <li>{{AMENITY_7}}</li>
+        <li>{{AMENITY_8}}</li>
+        <li>{{AMENITY_9}}</li>
+        <li>{{AMENITY_10}}</li>
+        <li>{{AMENITY_11}}</li>
       </ul>
     </section>
 
@@ -312,43 +312,43 @@
           <div>
             <h4 style="font-size:17px;font-weight:700;margin-bottom:var(--space-md);color:var(--dark)">{{LOCATION_EDU}}</h4>
             <ul class="location-list">
-              <li>Colegio Campestre Horizontes</li>
-              <li>Colegio Montessori Oriente</li>
-              <li>Colegio International School</li>
-              <li>Colegio Jorge Robledo</li>
-              <li>Universidad Católica de Oriente</li>
-              <li>EAFIT - UPB - UdeA (sedes Oriente)</li>
+              <li>{{EDU_1}}</li>
+              <li>{{EDU_2}}</li>
+              <li>{{EDU_3}}</li>
+              <li>{{EDU_4}}</li>
+              <li>{{EDU_5}}</li>
+              <li>{{EDU_6}}</li>
             </ul>
           </div>
 
           <div>
             <h4 style="font-size:17px;font-weight:700;margin-bottom:var(--space-md);color:var(--dark)">{{LOCATION_SHOP}}</h4>
             <ul class="location-list">
-              <li>CC San Nicolás (Éxito)</li>
-              <li>Complex Llanogrande</li>
-              <li>Reserva Plaza</li>
-              <li>Jumbo Rionegro</li>
-              <li>Próximamente Euro Supermercado en Silvestra Plaza </li>
+              <li>{{SHOP_1}}</li>
+              <li>{{SHOP_2}}</li>
+              <li>{{SHOP_3}}</li>
+              <li>{{SHOP_4}}</li>
+              <li>{{SHOP_5}}</li>
             </ul>
           </div>
 
           <div>
             <h4 style="font-size:17px;font-weight:700;margin-bottom:var(--space-md);color:var(--dark)">{{LOCATION_HEALTH}}</h4>
             <ul class="location-list">
-              <li>Hospital San Vicente</li>
-              <li>Clínica Somer</li>
-              <li>Hospital Gilberto Mejía</li>
+              <li>{{HEALTH_1}}</li>
+              <li>{{HEALTH_2}}</li>
+              <li>{{HEALTH_3}}</li>
             </ul>
           </div>
 
           <div>
             <h4 style="font-size:17px;font-weight:700;margin-bottom:var(--space-md);color:var(--dark)">{{LOCATION_FUN}}</h4>
             <ul class="location-list">
-              <li>Parque Principal San Antonio, famoso por postres artesanales</li>
-              <li>Zona gastronómica (El Patio, El Balcón)</li>
-              <li>Parque Comfama Rionegro</li>
-              <li>Iglesia San Antonio de Pereira</li>
-              <li>Rutas ciclísticas y senderismo</li>
+              <li>{{FUN_1}}</li>
+              <li>{{FUN_2}}</li>
+              <li>{{FUN_3}}</li>
+              <li>{{FUN_4}}</li>
+              <li>{{FUN_5}}</li>
             </ul>
           </div>
         </div>
@@ -367,8 +367,8 @@
       </div>
       <div class="card pad">
         <ul class="bullets">
-          <li>✅ Trámite 100% digital, sin tramitología compleja.</li>
-          <li>🧾 Aprobación sujeta a estudio del inquilino por SURA.</li>
+          <li>{{SURA_LI_1}}</li>
+          <li>{{SURA_LI_2}}</li>
         </ul>
       </div>
     </section>
