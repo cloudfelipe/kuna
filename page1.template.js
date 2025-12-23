@@ -238,6 +238,13 @@ document.addEventListener('click', event => {
   }
 });
 
+const langLinks = document.querySelectorAll('.lang-switch a, .lang-switch-mobile a');
+langLinks.forEach(link => {
+  attachClickTracking(link, 'lang_switch', {
+    lang: link.dataset.lang || link.textContent?.trim().toLowerCase()
+  });
+});
+
 const videoFrame = document.querySelector('.video-frame');
 if (videoFrame && 'IntersectionObserver' in window) {
   const videoObserver = new IntersectionObserver((entries, observer) => {
