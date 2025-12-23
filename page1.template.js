@@ -57,9 +57,9 @@ handleScroll();
 // Update all WA links when you set your number once here:
 const WHATSAPP_NUMBER = '{{WHATSAPP_NUMBER}}';
 const preMsgs = {
-  hero: encodeURIComponent('¡Hola! Vi el apartamento en Kuna y quiero agendar una visita 🏡'),
-  final: encodeURIComponent('Hola, quiero información del apartamento en Kuna para arriendo y agendar visita.'),
-  button: encodeURIComponent('Hola, estoy interesado en el apartamento de Kuna.')
+  hero: encodeURIComponent('{{WA_MSG_HERO}}'),
+  final: encodeURIComponent('{{WA_MSG_FINAL}}'),
+  button: encodeURIComponent('{{WA_MSG_BUTTON}}')
 };
 
 const setWhatsAppLinks = () => {

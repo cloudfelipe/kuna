@@ -7,31 +7,44 @@ const __dirname = dirname(__filename);
 
 const root = __dirname;
 
-const replacements = {
+const envReplacements = {
   GA_ID: process.env.GA_ID ?? 'G-XXXXXXXXXX',
   FB_PIXEL_ID: process.env.FB_PIXEL_ID ?? 'XXXXXXXXXXXXXXX',
   WHATSAPP_NUMBER: process.env.WHATSAPP_NUMBER ?? '57XXXXXXXXXX',
   SITE_URL: process.env.SITE_URL ?? 'https://apartamentoenkuna.com/page1.html'
 };
 
-const replaceTokens = (content) =>
-  content
-    .replace(/{{GA_ID}}/g, replacements.GA_ID)
-    .replace(/{{FB_PIXEL_ID}}/g, replacements.FB_PIXEL_ID)
-    .replace(/{{WHATSAPP_NUMBER}}/g, replacements.WHATSAPP_NUMBER)
-    .replace(/{{SITE_URL}}/g, replacements.SITE_URL);
+const replaceTokens = (content, map) =>
+  Object.entries(map).reduce((acc, [key, value]) => {
+    const re = new RegExp(`{{${key}}}`, 'g');
+    return acc.replace(re, value);
+  }, content);
 
-const files = [
-  { template: 'page1.template.html', output: 'page1.html' },
-  { template: 'page1.template.js', output: 'page1.js' }
-];
+const languages = ['es', 'en'];
 
-files.forEach(({ template, output }) => {
-  const templatePath = join(root, template);
-  const outputPath = join(root, output);
-  const content = readFileSync(templatePath, 'utf8');
-  writeFileSync(outputPath, replaceTokens(content));
-  console.log(`Generated ${output} from ${template}`);
+languages.forEach((lang) => {
+  const i18nPath = join(root, 'i18n', `${lang}.json`);
+  const i18n = JSON.parse(readFileSync(i18nPath, 'utf8'));
+  const map = { ...envReplacements, ...i18n };
+
+  const files = [
+    { template: 'page1.template.html', output: `page-${lang}.html` },
+    { template: 'page1.template.js', output: `page-${lang}.js` }
+  ];
+
+  files.forEach(({ template, output }) => {
+    const templatePath = join(root, template);
+    const outputPath = join(root, output);
+    const content = readFileSync(templatePath, 'utf8');
+    writeFileSync(outputPath, replaceTokens(content, map));
+    console.log(`Generated ${output} (${lang})`);
+  });
+
+  // Para compatibilidad, dejamos page1.* como alias del español
+  if (lang === 'es') {
+    writeFileSync(join(root, 'page1.html'), readFileSync(join(root, 'page-es.html'), 'utf8'));
+    writeFileSync(join(root, 'page1.js'), readFileSync(join(root, 'page-es.js'), 'utf8'));
+  }
 });
 
 console.log('Build complete. Remember to keep your environment variables configured in Netlify.');

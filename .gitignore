@@ -1,8 +1,11 @@
-node_modules/
-package-lock.json
 page1.html
 page1.js
+page-es.html
+page-en.html
+page-es.js
+page-en.js
 .env
-
-
 .DS_Store
+node_modules/
+package-lock.json
+
