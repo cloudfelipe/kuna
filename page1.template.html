@@ -65,10 +65,10 @@
         <a class="link" href="#sura">{{NAV_SURA}}</a>
         <a class="link" href="#contacto">{{NAV_CONTACT}}</a>
       </div>
-        <div class="lang-switch">
-          <a href="{{LANG_HREF_ES}}" class="{{LANG_ACTIVE_ES}}">{{LANG_ES_LABEL}}</a>
+      <div class="lang-switch">
+        <a href="{{LANG_HREF_ES}}" data-lang="es" class="{{LANG_ACTIVE_ES}}">{{LANG_ES_LABEL}}</a>
           <span class="lang-sep">|</span>
-          <a href="{{LANG_HREF_EN}}" class="{{LANG_ACTIVE_EN}}">{{LANG_EN_LABEL}}</a>
+        <a href="{{LANG_HREF_EN}}" data-lang="en" class="{{LANG_ACTIVE_EN}}">{{LANG_EN_LABEL}}</a>
         </div>
 
       <!-- Mobile Menu Toggle -->
@@ -85,13 +85,18 @@
 
   <!-- Mobile Menu Sidebar -->
   <div class="mobile-menu" id="mobile-menu">
-    <a class="link" href="#detalles">Detalles</a>
-    <a class="link" href="#galeria">Galería</a>
-    <a class="link" href="#tour">Tour 360°</a>
-    <a class="link" href="#amenidades">Zonas comunes</a>
-    <a class="link" href="#ubicacion">Ubicación</a>
-    <a class="link" href="#sura">SURA</a>
-    <a class="link" href="#contacto">Contacto</a>
+    <div class="lang-switch-mobile">
+      <a href="{{LANG_HREF_ES}}" data-lang="es" class="{{LANG_ACTIVE_ES}}">{{LANG_ES_LABEL}}</a>
+      <span class="lang-sep">|</span>
+      <a href="{{LANG_HREF_EN}}" data-lang="en" class="{{LANG_ACTIVE_EN}}">{{LANG_EN_LABEL}}</a>
+    </div>
+    <a class="link" href="#detalles">{{NAV_DETAILS}}</a>
+    <a class="link" href="#galeria">{{NAV_GALLERY}}</a>
+    <a class="link" href="#tour">{{NAV_TOUR}}</a>
+    <a class="link" href="#amenidades">{{NAV_AMENITIES}}</a>
+    <a class="link" href="#ubicacion">{{NAV_LOCATION}}</a>
+    <a class="link" href="#sura">{{NAV_SURA}}</a>
+    <a class="link" href="#contacto">{{NAV_CONTACT}}</a>
   </div>
 
   <!-- HERO -->
@@ -414,7 +419,7 @@
     <div class="lightbox-content">
       <img id="lightbox-img" src="" alt="">
     </div>
-    <div class="lightbox-hint" id="lightbox-hint">Desliza para ver más</div>
+    <div class="lightbox-hint" id="lightbox-hint">{{LIGHTBOX_HINT}}</div>
     <div class="lightbox-counter" id="lightbox-counter"></div>
   </div>
 </body>
