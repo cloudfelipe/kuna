@@ -46,6 +46,11 @@ p{font-size:17px;line-height:1.7}
 .nav a.link:hover{color:var(--ink)}
 .nav a.link::after{content:'';position:absolute;bottom:-22px;left:0;width:0;height:2px;background:var(--ink);transition:width 0.3s ease}
 .nav a.link:hover::after{width:100%}
+.lang-switch{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--muted)}
+.lang-switch a{font-weight:600;color:var(--muted);padding:6px 8px;border-radius:999px;transition:all 0.2s ease}
+.lang-switch a.active{color:var(--ink);background:var(--light-gray)}
+.lang-switch a:hover{color:var(--ink)}
+.lang-switch .lang-sep{color:var(--border)}
 
 /* MOBILE MENU */
 .menu-toggle{display:none;background:none;border:none;cursor:pointer;padding:8px;flex-direction:column;gap:5px;z-index:1001}
