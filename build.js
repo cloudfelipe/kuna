@@ -51,6 +51,7 @@ languages.forEach((lang) => {
   if (lang === 'es') {
     writeFileSync(join(root, 'page1.html'), readFileSync(join(root, 'page-es.html'), 'utf8'));
     writeFileSync(join(root, 'page1.js'), readFileSync(join(root, 'page-es.js'), 'utf8'));
+    writeFileSync(join(root, 'index.html'), readFileSync(join(root, 'page-es.html'), 'utf8'));
   }
 });
 
