@@ -89,7 +89,7 @@ p{font-size:17px;line-height:1.7}
 .hero-content{position:relative;z-index:1;text-align:center;padding:var(--space-3xl) var(--space-xl);max-width:1000px;animation:fadeInUp 0.8s ease-out}
 .eyebrow{display:inline-block;background:rgba(255,255,255,.15);color:#fff;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);padding:8px 16px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:var(--space-lg);letter-spacing:0.5px;text-transform:uppercase}
 .hero h1{font-size:clamp(32px,5vw,56px);line-height:1.15;margin-bottom:var(--space-lg);font-weight:700;letter-spacing:-1px}
-.hero p{font-size:clamp(16px,2vw,20px);opacity:.9;margin:0 auto var(--space-xl);max-width:700px;line-height:1.6}
+.hero p{font-size:clamp(18px,2vw,20px);opacity:.9;margin:0 auto var(--space-xl);max-width:700px;line-height:1.6}
 .hero .cta{display:inline-flex;gap:var(--space-sm);align-items:center;background:#fff;color:#000;padding:16px 32px;border-radius:999px;font-weight:700;font-size:16px;box-shadow:var(--shadow-lg);transition:all 0.3s ease}
 .hero .cta:hover{transform:translateY(-2px);box-shadow:0 20px 25px -5px rgba(0,0,0,0.2), 0 10px 10px -5px rgba(0,0,0,0.1)}
 
@@ -175,6 +175,7 @@ p.sub{color:var(--muted);font-size:18px;max-width:700px;margin:0 auto;line-heigh
 .cta-block{display:grid;place-items:center;text-align:center;background:var(--light-gray);border:1px solid var(--border);border-radius:var(--radius-xl);padding:var(--space-3xl);box-shadow:var(--shadow)}
 #cta-final{flex-direction:column;text-align:center;padding:24px 40px;gap:var(--space-sm)}
 #cta-final svg{width:28px;height:28px}
+#pet-note{margin:var(--space-md) auto var(--space-2xl);max-width:900px;color:var(--muted);font-size:14px;line-height:1.6;text-align:center}
 
 /* FOOTER */
 footer{padding:var(--space-xl) 0;color:var(--muted);border-top:1px solid var(--border);background:var(--light-gray);font-size:14px}
