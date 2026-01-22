@@ -11,7 +11,8 @@ const envReplacements = {
   GA_ID: process.env.GA_ID ?? 'G-XXXXXXXXXX',
   FB_PIXEL_ID: process.env.FB_PIXEL_ID ?? 'XXXXXXXXXXXXXXX',
   WHATSAPP_NUMBER: process.env.WHATSAPP_NUMBER ?? '57XXXXXXXXXX',
-  SITE_URL: process.env.SITE_URL ?? 'https://apartamentoenkuna.com/page1.html'
+  SITE_URL: process.env.SITE_URL ?? 'https://apartamentoenkuna.netlify.app/page1.html',
+  META_IMAGE: process.env.META_IMAGE ?? 'https://apartamentoenkuna.netlify.app/assets-optimized/hero2-1920.jpg'
 };
 
 const replaceTokens = (content, map) =>
