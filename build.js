@@ -7,12 +7,21 @@ const __dirname = dirname(__filename);
 
 const root = __dirname;
 
+const formatPrice = (price) => {
+  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+};
+
+const PRICE_RAW = process.env.PRICE ?? '4200000';
+const PRICE_NUMBER = parseInt(PRICE_RAW.replace(/\D/g, ''), 10);
+
 const envReplacements = {
   GA_ID: process.env.GA_ID ?? 'G-XXXXXXXXXX',
   FB_PIXEL_ID: process.env.FB_PIXEL_ID ?? 'XXXXXXXXXXXXXXX',
   WHATSAPP_NUMBER: process.env.WHATSAPP_NUMBER ?? '57XXXXXXXXXX',
   SITE_URL: process.env.SITE_URL ?? 'https://apartamentoenkuna.netlify.app/page1.html',
-  META_IMAGE: process.env.META_IMAGE ?? 'https://apartamentoenkuna.netlify.app/assets-optimized/hero2-1920.jpg'
+  META_IMAGE: process.env.META_IMAGE ?? 'https://apartamentoenkuna.netlify.app/assets-optimized/hero2-1920.jpg',
+  PRICE: PRICE_NUMBER,
+  PRICE_FORMATTED: formatPrice(PRICE_NUMBER)
 };
 
 const replaceTokens = (content, map) =>
