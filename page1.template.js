@@ -1,13 +1,19 @@
+// Template file: tokens like {{PRICE}} will be replaced during build
+// Linter errors in this file are expected and will be resolved after build.js processes it
 const tabs = document.querySelectorAll('.tab[data-pane]');
 const panes = document.querySelectorAll('.pane');
 
-const trackEvent = (name, params = {}) => {
+const trackEvent = (name, params = {}, isStandardEvent = false) => {
   if (typeof window !== 'undefined') {
     if (typeof window.gtag === 'function') {
       window.gtag('event', name, params);
     }
     if (typeof window.fbq === 'function') {
-      window.fbq('trackCustom', name, params);
+      if (isStandardEvent) {
+        window.fbq('track', name, params);
+      } else {
+        window.fbq('trackCustom', name, params);
+      }
     }
   }
 };
@@ -72,7 +78,26 @@ const setWhatsAppLinks = () => {
 setWhatsAppLinks();
 const trackWhatsappLinks = () => {
   const waLinks = document.querySelectorAll('a[href*="wa.me"]');
-  waLinks.forEach(link => attachClickTracking(link, 'whatsapp_click', { href: link.href }));
+  waLinks.forEach(link => {
+    if (link.dataset.trackingAttached) return;
+    link.addEventListener('click', () => {
+      const location = link.dataset.ctaLocation || 'unknown';
+      
+      trackEvent('Contact', {
+        content_name: 'Apartamento Kuna',
+        content_category: 'Real Estate',
+        value: {{PRICE}},
+        currency: 'COP',
+        cta_location: location
+      }, true);
+      
+      trackEvent('whatsapp_click', { 
+        href: link.href,
+        location: location
+      });
+    });
+    link.dataset.trackingAttached = 'true';
+  });
 };
 trackWhatsappLinks();
 
@@ -292,6 +317,16 @@ const handleScrollDepth = () => {
 };
 document.addEventListener('scroll', handleScrollDepth, { passive: true });
 window.addEventListener('load', handleScrollDepth);
+
+setTimeout(() => {
+  trackEvent('ViewContent', {
+    content_name: 'Apartamento Kuna',
+    content_ids: ['kuna_apto_piso3'],
+    content_type: 'property',
+    value: {{PRICE}},
+    currency: 'COP'
+  }, true);
+}, 10000);
 
 setTimeout(() => {
   trackEvent('time_on_page', { seconds: 30 });
