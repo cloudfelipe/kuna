@@ -54,6 +54,26 @@ Este proyecto utiliza variables de entorno para configurar valores dinámicos. C
 - Eventos de Meta Pixel como `4200000` (número sin formato)
 - Eventos de Google Analytics como `4200000` (número sin formato)
 
+#### `PRICE_TWO_PARKING` (opcional)
+- **Descripción**: Precio mostrado en la landing para la opción con 2 parqueaderos
+- **Formato**: Número con o sin puntos
+- **Default**: toma el valor de `PRICE`
+- **Ejemplos válidos**:
+  - `PRICE_TWO_PARKING=4700000`
+  - `PRICE_TWO_PARKING=4.700.000`
+
+#### `PRICE_ONE_PARKING` (opcional)
+- **Descripción**: Precio mostrado en la landing para la opción con 1 parqueadero
+- **Formato**: Número con o sin puntos
+- **Default**: toma el valor de `PRICE`
+- **Ejemplos válidos**:
+  - `PRICE_ONE_PARKING=4300000`
+  - `PRICE_ONE_PARKING=4.300.000`
+
+**Importante**:
+- `PRICE` sigue siendo el valor canónico usado por tracking y compatibilidad.
+- `PRICE_TWO_PARKING` y `PRICE_ONE_PARKING` se usan para mostrar las dos opciones comerciales en la interfaz.
+
 ## Configuración en Netlify
 
 1. Ve a: **Site Settings → Environment Variables**
@@ -72,6 +92,8 @@ WHATSAPP_NUMBER=573001234567
 SITE_URL=https://apartamentoenkuna.netlify.app/page1.html
 META_IMAGE=https://apartamentoenkuna.netlify.app/assets-optimized/hero2-1920.jpg
 PRICE=4200000
+PRICE_TWO_PARKING=4700000
+PRICE_ONE_PARKING=4300000
 ```
 
 Luego ejecuta:

@@ -65,14 +65,20 @@ const WHATSAPP_NUMBER = '{{WHATSAPP_NUMBER}}';
 const preMsgs = {
   hero: encodeURIComponent('{{WA_MSG_HERO}}'),
   final: encodeURIComponent('{{WA_MSG_FINAL}}'),
-  button: encodeURIComponent('{{WA_MSG_BUTTON}}')
+  button: encodeURIComponent('{{WA_MSG_BUTTON}}'),
+  pricingPrimary: encodeURIComponent('{{WA_MSG_PRICE_PRIMARY}}'),
+  pricingSecondary: encodeURIComponent('{{WA_MSG_PRICE_SECONDARY}}')
 };
 
 const setWhatsAppLinks = () => {
   const heroCta = document.getElementById('cta-hero');
   const finalCta = document.getElementById('cta-final');
+  const pricingPrimaryCta = document.getElementById('cta-price-primary');
+  const pricingSecondaryCta = document.getElementById('cta-price-secondary');
   if (heroCta) heroCta.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.hero}`;
   if (finalCta) finalCta.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.final}`;
+  if (pricingPrimaryCta) pricingPrimaryCta.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.pricingPrimary}`;
+  if (pricingSecondaryCta) pricingSecondaryCta.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.pricingSecondary}`;
   if (waButton) waButton.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.button}`;
 };
 setWhatsAppLinks();
@@ -90,8 +96,16 @@ const trackWhatsappLinks = () => {
         currency: 'COP',
         cta_location: location
       }, true);
-      
-      trackEvent('whatsapp_click', { 
+
+      trackEvent('Lead', {
+        content_name: 'Apartamento Kuna',
+        content_category: 'Real Estate',
+        value: {{PRICE}},
+        currency: 'COP',
+        cta_location: location
+      }, true);
+
+      trackEvent('whatsapp_click', {
         href: link.href,
         location: location
       });
@@ -109,18 +123,25 @@ const lightboxPrev = document.getElementById('lightbox-prev');
 const lightboxNext = document.getElementById('lightbox-next');
 const lightboxCounter = document.getElementById('lightbox-counter');
 const lightboxContent = document.querySelector('.lightbox-content');
+const lightboxTrack = document.getElementById('lightbox-track');
 const lightboxHint = document.getElementById('lightbox-hint');
 
 const lightboxState = {
   images: [],
   index: 0,
-  keyListenerActive: false
+  keyListenerActive: false,
+  dragStartX: null,
+  dragDeltaX: 0,
+  hintTimeoutId: null
 };
 
 const updateLightbox = () => {
-  if (!lightboxImg || !lightboxCounter || !lightboxState.images.length) return;
-  lightboxImg.src = lightboxState.images[lightboxState.index];
+  if (!lightboxCounter || !lightboxState.images.length) return;
+  if (!isMobileViewport() && lightboxImg) {
+    lightboxImg.src = lightboxState.images[lightboxState.index];
+  }
   lightboxCounter.textContent = `${lightboxState.index + 1} / ${lightboxState.images.length}`;
+  if (isMobileViewport()) renderMobileTrack();
   trackEvent('lightbox_image_view', { index: lightboxState.index + 1 });
 };
 
@@ -133,22 +154,71 @@ const handleKeyNavigation = event => {
 
 const isMobileViewport = () => window.innerWidth <= 700;
 
-let touchStartX = null;
-const handleTouchStart = event => {
-  if (!isMobileViewport() || !event.changedTouches?.length) return;
-  touchStartX = event.changedTouches[0].clientX;
+const buildMobileSlides = () => {
+  if (!lightboxTrack) return;
+  lightboxTrack.innerHTML = '';
+  lightboxState.images.forEach((src, index) => {
+    const slide = document.createElement('div');
+    slide.className = 'lightbox-slide';
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = `Imagen ${index + 1}`;
+    img.loading = index === lightboxState.index ? 'eager' : 'lazy';
+    slide.appendChild(img);
+    lightboxTrack.appendChild(slide);
+  });
 };
 
-const handleTouchEnd = event => {
-  if (!isMobileViewport() || touchStartX === null || !event.changedTouches?.length) return;
-  const touchEndX = event.changedTouches[0].clientX;
-  const delta = touchStartX - touchEndX;
-  touchStartX = null;
-  if (Math.abs(delta) < 40) return;
-  delta > 0 ? showNext() : showPrev();
+const renderMobileTrack = (offsetX = 0) => {
+  if (!lightboxTrack || !lightboxState.images.length) return;
+  const width = lightboxContent?.clientWidth || window.innerWidth;
+  const baseX = -lightboxState.index * width;
+  lightboxTrack.style.transform = `translate3d(${baseX + offsetX}px, 0, 0)`;
+};
+
+const showMobileHint = () => {
+  if (!lightboxHint || !isMobileViewport()) return;
+  lightboxHint.classList.remove('is-hidden');
+  clearTimeout(lightboxState.hintTimeoutId);
+  lightboxState.hintTimeoutId = window.setTimeout(() => {
+    lightboxHint.classList.add('is-hidden');
+  }, 2200);
+};
+
+const handleTouchStart = event => {
+  if (!isMobileViewport() || !lightbox.classList.contains('active') || !event.changedTouches?.length) return;
+  lightboxState.dragStartX = event.changedTouches[0].clientX;
+  lightboxState.dragDeltaX = 0;
+  lightboxTrack?.classList.add('is-dragging');
+  lightboxHint?.classList.add('is-hidden');
+};
+
+const handleTouchMove = event => {
+  if (!isMobileViewport() || lightboxState.dragStartX === null || !event.changedTouches?.length) return;
+  lightboxState.dragDeltaX = event.changedTouches[0].clientX - lightboxState.dragStartX;
+  renderMobileTrack(lightboxState.dragDeltaX);
+};
+
+const resetDragState = () => {
+  lightboxState.dragStartX = null;
+  lightboxState.dragDeltaX = 0;
+  lightboxTrack?.classList.remove('is-dragging');
+};
+
+const handleTouchEnd = () => {
+  if (!isMobileViewport() || lightboxState.dragStartX === null) return;
+  const threshold = (lightboxContent?.clientWidth || window.innerWidth) * 0.18;
+  const delta = lightboxState.dragDeltaX;
+  resetDragState();
+  if (Math.abs(delta) < threshold) {
+    renderMobileTrack();
+    return;
+  }
+  delta < 0 ? showNext() : showPrev();
 };
 
 lightboxContent?.addEventListener('touchstart', handleTouchStart, { passive: true });
+lightboxContent?.addEventListener('touchmove', handleTouchMove, { passive: true });
 lightboxContent?.addEventListener('touchend', handleTouchEnd, { passive: true });
 
 const attachKeyListener = () => {
@@ -168,6 +238,11 @@ const detachKeyListener = () => {
 function openLightbox() {
   if (!lightbox) return;
   lightbox.classList.add('active');
+  if (waButton) waButton.classList.add('lightbox-hidden');
+  if (isMobileViewport()) {
+    buildMobileSlides();
+    showMobileHint();
+  }
   updateLightbox();
   document.body.style.overflow = 'hidden';
   attachKeyListener();
@@ -177,9 +252,12 @@ function openLightbox() {
 function closeLightbox() {
   if (!lightbox) return;
   lightbox.classList.remove('active');
+  if (waButton) waButton.classList.remove('lightbox-hidden');
   document.body.style.overflow = '';
   detachKeyListener();
-  touchStartX = null;
+  clearTimeout(lightboxState.hintTimeoutId);
+  lightboxHint?.classList.remove('is-hidden');
+  resetDragState();
   trackEvent('lightbox_close');
 }
 
@@ -220,6 +298,12 @@ if (lightbox) {
     if (event.target === lightbox) closeLightbox();
   });
 }
+window.addEventListener('resize', () => {
+  if (lightbox?.classList.contains('active') && isMobileViewport()) {
+    buildMobileSlides();
+    renderMobileTrack();
+  }
+});
 initLightbox();
 
 // Mobile Menu
@@ -250,6 +334,9 @@ mobileMenuLinks.forEach(link => link.addEventListener('click', () => closeMobile
 
 // Tracking for secondary CTAs and navigation
 attachClickTracking(document.querySelector('.btn-primary'), 'cta_secondary_click');
+attachClickTracking(document.getElementById('cta-price-primary'), 'pricing_option_click', { option: 'two_parking' });
+attachClickTracking(document.getElementById('cta-price-secondary'), 'pricing_option_click', { option: 'one_parking' });
+attachClickTracking(document.getElementById('cta-hero'), 'cta_hero_click');
 document.querySelectorAll('.nav .link').forEach(link => attachClickTracking(link, 'nav_link_click', { target: link.getAttribute('href') }));
 
 document.addEventListener('click', event => {
@@ -331,4 +418,3 @@ setTimeout(() => {
 setTimeout(() => {
   trackEvent('time_on_page', { seconds: 30 });
 }, 30000);
-

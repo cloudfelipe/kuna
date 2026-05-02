@@ -13,6 +13,10 @@ const formatPrice = (price) => {
 
 const PRICE_RAW = process.env.PRICE ?? '4200000';
 const PRICE_NUMBER = parseInt(PRICE_RAW.replace(/\D/g, ''), 10);
+const PRICE_TWO_PARKING_RAW = process.env.PRICE_TWO_PARKING ?? PRICE_RAW;
+const PRICE_ONE_PARKING_RAW = process.env.PRICE_ONE_PARKING ?? PRICE_RAW;
+const PRICE_TWO_PARKING_NUMBER = parseInt(PRICE_TWO_PARKING_RAW.replace(/\D/g, ''), 10);
+const PRICE_ONE_PARKING_NUMBER = parseInt(PRICE_ONE_PARKING_RAW.replace(/\D/g, ''), 10);
 
 const envReplacements = {
   GA_ID: process.env.GA_ID ?? 'G-XXXXXXXXXX',
@@ -21,7 +25,11 @@ const envReplacements = {
   SITE_URL: process.env.SITE_URL ?? 'https://apartamentoenkuna.netlify.app/page1.html',
   META_IMAGE: process.env.META_IMAGE ?? 'https://apartamentoenkuna.netlify.app/assets-optimized/hero2-1920.jpg',
   PRICE: PRICE_NUMBER,
-  PRICE_FORMATTED: formatPrice(PRICE_NUMBER)
+  PRICE_FORMATTED: formatPrice(PRICE_NUMBER),
+  PRICE_TWO_PARKING: PRICE_TWO_PARKING_NUMBER,
+  PRICE_TWO_PARKING_FORMATTED: formatPrice(PRICE_TWO_PARKING_NUMBER),
+  PRICE_ONE_PARKING: PRICE_ONE_PARKING_NUMBER,
+  PRICE_ONE_PARKING_FORMATTED: formatPrice(PRICE_ONE_PARKING_NUMBER)
 };
 
 const replaceTokens = (content, map) =>
@@ -66,4 +74,3 @@ languages.forEach((lang) => {
 });
 
 console.log('Build complete. Remember to keep your environment variables configured in Netlify.');
-
