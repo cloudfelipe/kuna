@@ -90,8 +90,16 @@ const trackWhatsappLinks = () => {
         currency: 'COP',
         cta_location: location
       }, true);
-      
-      trackEvent('whatsapp_click', { 
+
+      trackEvent('Lead', {
+        content_name: 'Apartamento Kuna',
+        content_category: 'Real Estate',
+        value: {{PRICE}},
+        currency: 'COP',
+        cta_location: location
+      }, true);
+
+      trackEvent('whatsapp_click', {
         href: link.href,
         location: location
       });

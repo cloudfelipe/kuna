@@ -24,6 +24,8 @@ Configura estas variables (por ejemplo en Netlify → Site settings → Environm
 | `SITE_URL`        | URL canónica del landing                        | URL de Netlify    |
 | `META_IMAGE`      | URL de imagen para OG tags                      | URL de Netlify    |
 | `PRICE`           | Precio del arriendo (con o sin puntos)          | `4200000`         |
+| `PRICE_TWO_PARKING` | Precio mostrado para la opción con 2 parqueaderos | valor de `PRICE` |
+| `PRICE_ONE_PARKING` | Precio mostrado para la opción con 1 parqueadero | valor de `PRICE` |
 
 **📄 Para más detalles sobre cada variable, consulta [ENV.md](ENV.md)**
 

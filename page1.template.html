@@ -119,9 +119,21 @@
     <section id="resumen">
       <div class="pricing-card">
         <div class="pricing-header">
-          <div>
-            <div class="price">${{PRICE_FORMATTED}}</div>
-            <p style="color:rgba(255,255,255,.8);font-size:16px;margin-top:var(--space-xs)">{{PRICE_CANON_LABEL}}</p>
+          <div class="pricing-summary">
+            <p class="pricing-kicker">{{PRICE_CANON_LABEL}}</p>
+            <div class="pricing-options">
+              <article class="price-option price-option-primary">
+                <p class="price-option-label">{{PRICE_OPTION_PRIMARY_LABEL}}</p>
+                <div class="price">${{PRICE_TWO_PARKING_FORMATTED}}</div>
+                <p class="price-option-detail">{{PRICE_OPTION_PRIMARY_DETAIL}}</p>
+              </article>
+              <article class="price-option">
+                <p class="price-option-label">{{PRICE_OPTION_SECONDARY_LABEL}}</p>
+                <div class="price price-secondary">${{PRICE_ONE_PARKING_FORMATTED}}</div>
+                <p class="price-option-detail">{{PRICE_OPTION_SECONDARY_DETAIL}}</p>
+              </article>
+            </div>
+            <p class="pricing-note">{{PRICE_NOTE}}</p>
           </div>
           <a href="#contacto" class="btn-primary">{{CTA_VISIT_LABEL}}</a>
         </div>
@@ -377,10 +389,25 @@
         <p class="sub">{{SURA_SUB}}</p>
       </div>
       <div class="card pad">
-        <ul class="bullets">
-          <li>{{SURA_LI_1}}</li>
-          <li>{{SURA_LI_2}}</li>
-        </ul>
+        <div class="sura-grid">
+          <article class="sura-item">
+            <h3>{{SURA_CARD_1_TITLE}}</h3>
+            <p>{{SURA_CARD_1_BODY}}</p>
+          </article>
+          <article class="sura-item">
+            <h3>{{SURA_CARD_2_TITLE}}</h3>
+            <p>{{SURA_CARD_2_BODY}}</p>
+          </article>
+          <article class="sura-item">
+            <h3>{{SURA_CARD_3_TITLE}}</h3>
+            <p>{{SURA_CARD_3_BODY}}</p>
+          </article>
+          <article class="sura-item">
+            <h3>{{SURA_CARD_4_TITLE}}</h3>
+            <p>{{SURA_CARD_4_BODY}}</p>
+          </article>
+        </div>
+        <p class="sura-note">{{SURA_NOTE}}</p>
       </div>
     </section>
 
