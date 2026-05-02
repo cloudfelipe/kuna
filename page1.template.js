@@ -65,14 +65,20 @@ const WHATSAPP_NUMBER = '{{WHATSAPP_NUMBER}}';
 const preMsgs = {
   hero: encodeURIComponent('{{WA_MSG_HERO}}'),
   final: encodeURIComponent('{{WA_MSG_FINAL}}'),
-  button: encodeURIComponent('{{WA_MSG_BUTTON}}')
+  button: encodeURIComponent('{{WA_MSG_BUTTON}}'),
+  pricingPrimary: encodeURIComponent('{{WA_MSG_PRICE_PRIMARY}}'),
+  pricingSecondary: encodeURIComponent('{{WA_MSG_PRICE_SECONDARY}}')
 };
 
 const setWhatsAppLinks = () => {
   const heroCta = document.getElementById('cta-hero');
   const finalCta = document.getElementById('cta-final');
+  const pricingPrimaryCta = document.getElementById('cta-price-primary');
+  const pricingSecondaryCta = document.getElementById('cta-price-secondary');
   if (heroCta) heroCta.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.hero}`;
   if (finalCta) finalCta.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.final}`;
+  if (pricingPrimaryCta) pricingPrimaryCta.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.pricingPrimary}`;
+  if (pricingSecondaryCta) pricingSecondaryCta.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.pricingSecondary}`;
   if (waButton) waButton.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${preMsgs.button}`;
 };
 setWhatsAppLinks();
@@ -258,6 +264,9 @@ mobileMenuLinks.forEach(link => link.addEventListener('click', () => closeMobile
 
 // Tracking for secondary CTAs and navigation
 attachClickTracking(document.querySelector('.btn-primary'), 'cta_secondary_click');
+attachClickTracking(document.getElementById('cta-price-primary'), 'pricing_option_click', { option: 'two_parking' });
+attachClickTracking(document.getElementById('cta-price-secondary'), 'pricing_option_click', { option: 'one_parking' });
+attachClickTracking(document.getElementById('cta-hero'), 'cta_hero_click');
 document.querySelectorAll('.nav .link').forEach(link => attachClickTracking(link, 'nav_link_click', { target: link.getAttribute('href') }));
 
 document.addEventListener('click', event => {
@@ -339,4 +348,3 @@ setTimeout(() => {
 setTimeout(() => {
   trackEvent('time_on_page', { seconds: 30 });
 }, 30000);
-
