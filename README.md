@@ -12,6 +12,8 @@ open page1.html
 
 Los archivos fuente son `page1.template.html` y `page1.template.js`. No edites los generados (`page1.html` / `page1.js`) porque se recrean en cada build.
 
+El optimizador `optimize_images_macos.sh` acepta imágenes `jpg`, `jpeg`, `png`, `heic` y `heif`, y genera variantes `avif`, `webp` y `jpg` en `assets-optimized/`.
+
 ## Variables de entorno
 
 Configura estas variables (por ejemplo en Netlify → Site settings → Environment) antes de desplegar:
