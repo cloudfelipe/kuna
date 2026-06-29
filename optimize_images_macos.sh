@@ -82,7 +82,7 @@ lower_ext() {
 count_total=0
 count_done=0
 
-# Find images recursively (jpg/jpeg/png)
+# Find images recursively (jpg/jpeg/png/heic/heif)
 # macOS 'find' supports -print0; use it to handle spaces
 while IFS= read -r -d '' f; do
   ext="$(lower_ext "$f")"
@@ -93,11 +93,19 @@ while IFS= read -r -d '' f; do
 
   sizes=$(sizes_for "$f")
   for w in $sizes; do
-    # Create a temp JPEG resized (even from PNG) to pass to encoders
-    # macOS mktemp does not support --suffix, so append .jpg after
+    # Create a temp JPEG resized to pass to encoders.
+    # HEIC/HEIF are converted first with heif-convert for better macOS compatibility.
     tmpbase="$(mktemp -t optimg)"
     tmp_jpg="${tmpbase}.jpg"
-    "$IM" "$f" -auto-orient -strip -resize "${w}x" -quality "$QUALITY_JPG" "$tmp_jpg"
+    if [[ "$ext" == "heic" || "$ext" == "heif" ]]; then
+      need heif-convert
+      tmp_source="${tmpbase}-source.jpg"
+      heif-convert "$f" "$tmp_source" >/dev/null 2>&1
+      "$IM" "$tmp_source" -auto-orient -strip -resize "${w}x" -quality "$QUALITY_JPG" "$tmp_jpg"
+      rm -f "$tmp_source"
+    else
+      "$IM" "$f" -auto-orient -strip -resize "${w}x" -quality "$QUALITY_JPG" "$tmp_jpg"
+    fi
 
     # Derive output filenames
     out_avif="$out_base_dir/$(basename "${base}")-${w}.avif"
@@ -116,7 +124,7 @@ while IFS= read -r -d '' f; do
   done
 
   ((count_total++)) || true
-done < <(find "$SRC_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) -print0)
+done < <(find "$SRC_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.heic" -o -iname "*.heif" \) -print0)
 
 echo
 echo "Listo. Imágenes procesadas: $count_total"
